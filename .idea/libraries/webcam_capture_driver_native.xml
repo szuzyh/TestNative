@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="webcam-capture-driver-native">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/webcam-capture-driver-native.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

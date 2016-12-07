@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.github.sarxos:webcam-capture-driver-v4l4j:0.3.11">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/sarxos/webcam-capture-driver-v4l4j/0.3.11/webcam-capture-driver-v4l4j-0.3.11.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/sarxos/webcam-capture-driver-v4l4j/0.3.11/webcam-capture-driver-v4l4j-0.3.11-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/sarxos/webcam-capture-driver-v4l4j/0.3.11/webcam-capture-driver-v4l4j-0.3.11-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
