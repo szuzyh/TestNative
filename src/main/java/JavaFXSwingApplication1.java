@@ -46,6 +46,8 @@ import static javafx.scene.layout.Region.USE_PREF_SIZE;
  */
 public class JavaFXSwingApplication1 extends JApplet {
 
+
+    public static Boolean isInitJacob=true;
     private static String[] msgString=new String[9];
     private static String picPath=null;
     private static String videoPath=null;
@@ -419,8 +421,8 @@ public class JavaFXSwingApplication1 extends JApplet {
         //  imagePerson.setImage(image);
 
         imageVBox.getChildren().add(imagePerson);
-        btnCheckControls();
-        btnClearControls();
+      //  btnCheckControls();
+       // btnClearControls();
         rightMessageAllBox.getChildren().add(imageVBox);
         fxContainer.setScene(new Scene(rightMessageAllBox));
     }
@@ -442,8 +444,9 @@ public class JavaFXSwingApplication1 extends JApplet {
         btnVideoAndMsg.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                initJacob();
                 try {
-                    initJacob();
+
                     inputDate();
                     new CreateVideo("VideoAndMsg",webCam);
                     videoPath="E:\\opuputVideoAndMsg.mp4";
@@ -463,8 +466,9 @@ public class JavaFXSwingApplication1 extends JApplet {
         btnPicAndMsg.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                initJacob();
                 try {
-                    initJacob();
+
                     inputDate();
                     new GetPic(webCam,"catchPicAndMsg");
                     picPath="E:\\catchPicAndMsg.jpg";
@@ -496,7 +500,6 @@ public class JavaFXSwingApplication1 extends JApplet {
             @Override
             public void handle(ActionEvent event) {
               initJacob();
-
                 try {
                     inputDate();
                     new  CreateVideo("ALL",webCam);
@@ -535,7 +538,7 @@ public class JavaFXSwingApplication1 extends JApplet {
                         try {
                             Platform.runLater(new Runnable() {
                                 public void run() {
-                                    clearMsg();
+                                    //clearMsg();
                                 }
                             });
                         }catch (Exception e){
@@ -550,29 +553,29 @@ public class JavaFXSwingApplication1 extends JApplet {
         imageVBox.getChildren().add(btnClear);
     }
 
-    private void clearMsg() {
-        nameRight.setText("");
-        sexRight.setText("");
-        nationRight.setText("");
-        addressRight.setText("");
-        IDRight.setText("");
-        departmentRight.setText("");
-        startDateRight.setText("");
-        endDateRight.setText("");
-        imagePerson.setImage(null);
-        name=null;
-        sex=null;
-        nation=null;
-        address=null;
-        ID=null;
-        department=null;
-        startDate=null;
-        endDate=null;
-        path=null;
-
-        //btnUploadFile.setDisable(true);
-
-    }
+//    private void clearMsg() {
+//        nameRight.setText("");
+//        sexRight.setText("");
+//        nationRight.setText("");
+//        addressRight.setText("");
+//        IDRight.setText("");
+//        departmentRight.setText("");
+//        startDateRight.setText("");
+//        endDateRight.setText("");
+//        imagePerson.setImage(null);
+//        name=null;
+//        sex=null;
+//        nation=null;
+//        address=null;
+//        ID=null;
+//        department=null;
+//        startDate=null;
+//        endDate=null;
+//        path=null;
+//
+//        //btnUploadFile.setDisable(true);
+//
+//    }
     private static void btnCheckControls() {
         btnCheck=new Button();
         btnCheck.setText("查询");
@@ -614,28 +617,39 @@ public class JavaFXSwingApplication1 extends JApplet {
         int ret = Dispatch.call(disp, "getCardInfo", new Variant("E:\\GET\\person.bmp")).getInt();
         if (ret != 0) {
             System.out.println("打开设备失败");
+            JLabel warningLabel=new JLabel("设备未打开！");
+            ImageIcon image = new ImageIcon("1.jpg");
+            warningLabel.setIcon(image);
+            JFrame frame=new JFrame();
+//            frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+            frame.setLocationRelativeTo(null);
+            frame.pack();
+            frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            frame.setSize(new Dimension(300,200));
+            frame.setVisible(true);
+            frame.add(warningLabel);
         } else {
             System.out.println("打开设备成功");
+            name = Dispatch.call(disp, "Name").getString().trim();
+            sex = Dispatch.call(disp, "Sex").getString().trim();
+            nation = Dispatch.call(disp, "Nation").getString().trim();
+            birthday = Dispatch.call(disp, "Birthday").getString().trim();
+            address = Dispatch.call(disp, "Address").getString().trim();
+            ID = Dispatch.call(disp, "ID").getString().trim();
+            department = Dispatch.call(disp, "Department").getString().trim();
+            startDate = Dispatch.call(disp, "StartDate").getString().trim();
+            endDate = Dispatch.call(disp, "EndDate").getString().trim();
+            path="E:\\GET\\person.bmp";
+            msgString[0]=name;
+            msgString[1]=sex;
+            msgString[2]=nation;
+            msgString[3]=birthday;
+            msgString[4]=address;
+            msgString[5]=ID;
+            msgString[6]=department;
+            msgString[7]=startDate;
+            msgString[8]=endDate;
         }
-        name = Dispatch.call(disp, "Name").getString().trim();
-        sex = Dispatch.call(disp, "Sex").getString().trim();
-        nation = Dispatch.call(disp, "Nation").getString().trim();
-        birthday = Dispatch.call(disp, "Birthday").getString().trim();
-        address = Dispatch.call(disp, "Address").getString().trim();
-        ID = Dispatch.call(disp, "ID").getString().trim();
-        department = Dispatch.call(disp, "Department").getString().trim();
-        startDate = Dispatch.call(disp, "StartDate").getString().trim();
-        endDate = Dispatch.call(disp, "EndDate").getString().trim();
-        path="E:\\GET\\person.bmp";
-        msgString[0]=name;
-        msgString[1]=sex;
-        msgString[2]=nation;
-        msgString[3]=birthday;
-        msgString[4]=address;
-        msgString[5]=ID;
-        msgString[6]=department;
-        msgString[7]=startDate;
-        msgString[8]=endDate;
 
 
     }
