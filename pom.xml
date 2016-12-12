@@ -31,5 +31,10 @@
         <artifactId>webcam-capture-driver-v4l4j</artifactId>
         <version>0.3.11</version>
     </dependency>
-</dependencies>
+        <dependency>
+            <groupId>com.sparkjava</groupId>
+            <artifactId>spark-core</artifactId>
+            <version>2.5</version>
+        </dependency>
+    </dependencies>
 </project>

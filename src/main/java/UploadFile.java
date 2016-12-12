@@ -1,12 +1,18 @@
+import spark.Request;
+import spark.Response;
+import spark.Route;
+import spark.Spark;
+
 import javax.swing.*;
 import java.awt.*;
+import java.io.*;
 
 /**
  * Created by Leo on 2016/12/7.
  */
 public class UploadFile {
     public UploadFile(String[] msgString, String picPath, String videoPath) throws InterruptedException {
-        if (!JavaFXSwingApplication1.isInitJacob){
+        if (msgString==null||picPath==null||videoPath==null){
             JLabel warningLabel=new JLabel("信息录入不完全！");
             ImageIcon image = new ImageIcon("1.jpg");
             warningLabel.setIcon(image);
@@ -33,7 +39,7 @@ public class UploadFile {
 
     }
 
-    public UploadFile(String[] msgString, String path) {
+    public UploadFile(String[] msgString, final String path) throws IOException {
         if (path==null||msgString==null){
             JLabel warningLabel=new JLabel("信息录入不完全！");
             ImageIcon image = new ImageIcon("1.jpg");
@@ -52,10 +58,23 @@ public class UploadFile {
                 System.out.println(s);
             }
             if (path.endsWith(".mp4")){
-                System.out.println("录像："+path);
+//                Spark.post("/Video", new Route() {
+//                    @Override
+//                    public Object handle(Request request, Response response) throws Exception {
+//                        File video=new File(path);
+//                        InputStream in=new FileInputStream(video);
+//                        byte[] videoByte=new byte[in.available()];
+//                        in.read(videoByte);
+//                        OutputStream out=null;
+//                        out.write(videoByte);
+//                        request.headers("video/x-msvideo");
+//                        return videoByte;
+//                    }
+//                });
+                System.out.println("finish");
             }
             if (path.endsWith(".jpg")){
-                System.out.println("截图："+path);
+
             }
         }
 
