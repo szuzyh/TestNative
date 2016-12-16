@@ -3,6 +3,9 @@
  */
 import java.awt.*;
 import java.io.*;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Enumeration;
 
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamEvent;
@@ -37,11 +40,15 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper;
+import org.json.JSONException;
+import webcam.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
+import javax.swing.plaf.FontUIResource;
 
 import static javafx.scene.layout.Region.USE_PREF_SIZE;
 
@@ -65,13 +72,14 @@ public class Main extends JApplet {
     private FlowPane topPane;
     private ComboBox topChoiceCam;
     private String cameraListPromptText = "选择摄像头";
-    private static Webcam webCam = null;
+    public static Webcam webCam = null;
 
-    private FlowPane bottomCameraControlPane;
-    private Button btnVideoAndMsg;
-    private Button btnPicAndMsg;
+    public static FlowPane bottomCameraControlPane;
+    public static Button btnVideoAndMsg;
+    public static Button btnFaceCompare;
+    public static Button btnPicAndMsg;
     //    private Button btnUploadFile;
-    private Button btnAllThing;
+    public static Button btnAllThing;
 
     private HBox rightMessageAllBox;
     private VBox TextMessageBox;
@@ -172,11 +180,11 @@ public class Main extends JApplet {
                 frame.setVisible(true);
                 frame.add(panel);
                 applet.start();
+
             }
         });
     }
-
-    @Override
+       @Override
     public void init() {
         fxContainer = new JFXPanel();
         fxContainer.setPreferredSize(new Dimension(360, 377));
@@ -455,6 +463,40 @@ public class Main extends JApplet {
     private void createBottomBtn() {
         btnVideoAndMsg=new Button();
         btnVideoAndMsg.setText("录像+身份证");
+        bottomCameraControlPane.getChildren().add(btnVideoAndMsg);
+        btnPicAndMsg= new Button();
+        btnPicAndMsg.setText("截图+身份证");
+        bottomCameraControlPane.getChildren().add(btnPicAndMsg);
+        btnAllThing=new Button();
+        btnAllThing.setText("一键上传");
+        bottomCameraControlPane.getChildren().add(btnAllThing);
+        btnFaceCompare=new Button();
+        btnFaceCompare.setText("人脸对比");
+        bottomCameraControlPane.getChildren().add(btnFaceCompare);
+        btnFaceCompare.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    initJacob();
+                    inputDate();
+                    new GetPic(webCam,"catchPicAndMsg");
+                    picPath="E:\\catchPicAndMsg.png";
+                   String  personPicPath="E:\\GET\\person.jpg";
+                    new CompareFace(personPicPath,picPath);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                } catch (KeyManagementException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
         btnVideoAndMsg.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -471,13 +513,8 @@ public class Main extends JApplet {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-
             }
         });
-        bottomCameraControlPane.getChildren().add(btnVideoAndMsg);
-        btnPicAndMsg= new Button();
-        btnPicAndMsg.setText("截图+身份证");
         btnPicAndMsg.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -485,42 +522,23 @@ public class Main extends JApplet {
                     initJacob();
                     inputDate();
                     new GetPic(webCam,"catchPicAndMsg");
-                    picPath="E:\\catchPicAndMsg.jpg";
+                    picPath="E:\\catchPicAndMsg.png";
                     new UploadFile(msgString,picPath);
                 } catch (IOException e) {
                     System.out.println("null");
                 }
-
             }
         });
-        bottomCameraControlPane.getChildren().add(btnPicAndMsg);
-//        btnUploadFile=new Button();
-//        btnUploadFile.setText("上传");
-//        btnUploadFile.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent event) {
-//                try {
-//                    new UploadFile(msgString,picPath,videoPath);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
-//        btnUploadFile.setDisable(true);
-//        bottomCameraControlPane.getChildren().add(btnUploadFile);
-        btnAllThing=new Button();
-        btnAllThing.setText("一键上传");
         btnAllThing.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                initJacob();
-
                 try {
+                    initJacob();
                     inputDate();
-                    new  CreateVideo("ALL",webCam);
+                    new CreateVideo("ALL",webCam);
                     videoPath="E:\\outputALL.mp4";
                     new GetPic(webCam,"catchPic");
-                    picPath="E:\\catchPic.jpg";
+                    picPath="E:\\catchPic.png";
                     new UploadFile(msgString,picPath,videoPath);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -529,8 +547,9 @@ public class Main extends JApplet {
                 }
             }
         });
-        bottomCameraControlPane.getChildren().add(btnAllThing);
     }
+
+
 
     private void createSceneTop() {
 
@@ -629,10 +648,11 @@ public class Main extends JApplet {
     private static void initJacob() {
         ActiveXComponent com = new ActiveXComponent("CLSID:0F55CC69-97EF-42A9-B63D-D1831CB2B3B9");
         Dispatch disp = (Dispatch) com.getObject();
-        int ret = Dispatch.call(disp, "getCardInfo", new Variant("E:\\GET\\person.bmp")).getInt();
+        int ret = Dispatch.call(disp, "getCardInfo", new Variant("E:\\GET\\person.jpg")).getInt();
         if (ret != 0) {
             System.out.println("打开设备失败");
             new attentionWindow("设备未打开或身份证未正确放置！","1.jpg",500,400);
+            return;
         } else {
             System.out.println("打开设备成功");
             name = Dispatch.call(disp, "Name").getString().trim();
@@ -644,7 +664,7 @@ public class Main extends JApplet {
             department = Dispatch.call(disp, "Department").getString().trim();
             startDate = Dispatch.call(disp, "StartDate").getString().trim();
             endDate = Dispatch.call(disp, "EndDate").getString().trim();
-            path="E:\\GET\\person.bmp";
+            path="E:\\GET\\person.jpg";
             msgString[0]=name;
             msgString[1]=sex;
             msgString[2]=nation;
@@ -655,8 +675,6 @@ public class Main extends JApplet {
             msgString[7]=startDate;
             msgString[8]=endDate;
         }
-
-
 
     }
     private static void inputDate() throws FileNotFoundException {

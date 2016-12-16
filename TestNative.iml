@@ -16,7 +16,7 @@
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <content url="file://$MODULE_DIR$">
@@ -31,6 +31,8 @@
     <orderEntry type="library" name="xuggle-xuggler-5.4" level="project" />
     <orderEntry type="library" name="webcam-capture-driver-native" level="project" />
     <orderEntry type="library" name="jacob" level="project" />
+    <orderEntry type="library" name="json" level="project" />
+    <orderEntry type="library" name="beautyeye_lnf" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-nop:1.7.5" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.5" level="project" />
     <orderEntry type="library" name="Maven: com.github.sarxos:webcam-capture-driver-v4l4j:0.3.11" level="project" />

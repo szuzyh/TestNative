@@ -3,4 +3,16 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
+
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+    <servlet>
+        <servlet-name>CreateVideoServlet</servlet-name>
+        <servlet-class>CreateVideoServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CreateVideoServlet</servlet-name>
+        <url-pattern>/CreateVideoServlet</url-pattern>
+    </servlet-mapping>
 </web-app>

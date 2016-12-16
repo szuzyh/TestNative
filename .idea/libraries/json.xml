@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="json">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/json.jar!/" />
+      <root url="jar://$PROJECT_DIR$/youtu-java-sdk.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/youtu-java-sdk.jar!/" />
+    </SOURCES>
+  </library>
+</component>
